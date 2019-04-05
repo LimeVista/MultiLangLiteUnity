@@ -20,3 +20,6 @@ I18n.GetText(R.Strings.Note, "This is a note");
 
 ## 高级使用
 > 详见： [I18n](https://github.com/LimeVista/MultiLangLiteUnity/blob/master/Assets/Scripts/UnityI18n/I18n.cs)
+
+## 缺点
+> 对外部资源包文本、联网获取文本多语言尚未实现
