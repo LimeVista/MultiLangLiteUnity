@@ -1,0 +1,7 @@
+            private static string ${name}Impl()
+            {
+                switch (I18n.Instance.CurrentLanguage)
+                {
+${case}
+                }
+            }

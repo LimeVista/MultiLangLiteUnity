@@ -1,0 +1,57 @@
+using System;
+using UnityEngine;
+
+/// <summary>
+/// 本文件由模板自动生成，请勿手动更改
+/// </summary>
+namespace UnityI18n
+{
+    /// <summary>
+    /// 资源类
+    /// </summary>
+    public static class R
+    {
+        public class Strings : ITextHolder
+        {
+            public readonly static Strings Instance = new Strings();
+
+            #region /* 字符串资源编号 */
+
+${id}
+            #endregion
+
+            #region /* Impl */
+
+${impl}
+            #endregion
+
+            public string FindText(int stringId)
+            {
+                switch (stringId)
+                {
+${case}
+                }
+
+                throw new ResourcesNotFoundException(stringId + "not found");
+            }
+        }
+    }
+
+    /// <summary>
+    /// 通过编译完成对初始化的注入
+    /// </summary>
+    public partial class I18n
+    {
+        partial void InitHook()
+        {
+            lock (Locker)
+            {
+                if (Holder == null)
+                {
+                    CurrentLanguage = Application.systemLanguage;
+                    Holder = R.Strings.Instance;
+                }
+            }
+        }
+    }
+}
