@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
-
+/// <summary>
+/// 本文件由模板自动生成，请勿手动更改
+/// </summary>
 namespace UnityI18n
 {
     /// <summary>
-    /// 本类由模板自动生成，请勿手动更改
+    /// 资源类
     /// </summary>
     public static class R
     {
@@ -13,11 +16,30 @@ namespace UnityI18n
         {
             public readonly static Strings Instance = new Strings();
 
+            private readonly Dictionary<string, int> CachedMap = new Dictionary<string, int>();
+
+            private Strings()
+            {
+                InitCache();
+            }
+            
             #region /* 字符串资源编号 */
 
             public const int Lime = 20190000;
             public const int Name = 20190001;
             public const int Note = 20190002;
+
+            #endregion
+
+            #region /* string cache*/
+
+            private void InitCache()
+            {
+                CachedMap.Add("Lime", Lime);
+                CachedMap.Add("Name", Name);
+                CachedMap.Add("Note", Note);
+
+            }
 
             #endregion
 
@@ -94,6 +116,15 @@ namespace UnityI18n
                 }
 
                 throw new ResourcesNotFoundException(stringId + "not found");
+            }
+
+            public string FindText(string stringId)
+            {
+                if (CachedMap.TryGetValue(stringId, out int value))
+                {
+                    return FindText(value);
+                }
+                return null;
             }
         }
     }

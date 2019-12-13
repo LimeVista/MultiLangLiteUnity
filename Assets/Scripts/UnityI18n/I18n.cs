@@ -40,8 +40,10 @@ namespace UnityI18n
         /// 获得单例
         /// </summary>
         /// <returns>单例</returns>
-        public static I18n Instance {
-            get {
+        public static I18n Instance
+        {
+            get
+            {
                 if (Inst == null)
                 {
                     lock (Locker)
@@ -78,8 +80,29 @@ namespace UnityI18n
         /// </summary>
         /// <param name="stringId">字符串编号</param>
         /// <returns>字符串</returns>
-        public string this[int stringId] {
-            get {
+        public string this[int stringId]
+        {
+            get
+            {
+                if (Holder == null)
+                {
+                    InitHook(); // 分部方法注入实现
+                    if (Holder == null)
+                        throw new NullReferenceException("MultiLanguage.Init(ITextHolder, uint) is not called!");
+                }
+                return Holder.FindText(stringId);
+            }
+        }
+
+        /// <summary>
+        /// 获取字符串
+        /// </summary>
+        /// <param name="stringId">通过字符串查询字符串编号</param>
+        /// <returns>字符串</returns>
+        public string this[string stringId]
+        {
+            get
+            {
                 if (Holder == null)
                 {
                     InitHook(); // 分部方法注入实现
@@ -118,6 +141,8 @@ namespace UnityI18n
     public interface ITextHolder
     {
         string FindText(int stringId);
+
+        string FindText(string stringId);
     }
 
     /// <summary>

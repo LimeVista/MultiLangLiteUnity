@@ -176,16 +176,19 @@ namespace Assets.Editor
         {
             var rs = MultiLangUtils.RSTemplate;
             var idStr = new StringBuilder();
+            var cacheStr = new StringBuilder();
             var implStr = new StringBuilder();
             var caseStr = new StringBuilder();
             int i = 20190000;
             foreach (var item in Items)
             {
                 idStr.AppendLine(item.Value.GenerateResourceID(i++));
+                cacheStr.AppendLine(item.Value.GenerateResourceString());
                 implStr.AppendLine(item.Value.GenerateMethod());
                 caseStr.AppendLine(item.Value.GenerateCase());
             }
             var code = rs.ReplaceSign("id", idStr.ToString())
+                .ReplaceSign("cache", cacheStr.ToString())
                 .ReplaceSign("impl", implStr.ToString())
                 .ReplaceSign("case", caseStr.ToString())
                 .ToString();
@@ -272,6 +275,18 @@ namespace Assets.Editor
         public string GenerateResourceID(int id)
         {
             return $"{3.Tabs()}public const int {Key.FirstCharToUpper()} = {id};";
+        }
+
+        /// <summary>
+        /// 生成如下资源 id
+        /// CachedMap.Add("Name", Name);
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns>代码</returns>
+        public string GenerateResourceString()
+        {
+            var key = Key.FirstCharToUpper();
+            return $"{4.Tabs()}CachedMap.Add(\"{key}\", {key});";
         }
 
         /// <summary>
@@ -364,8 +379,10 @@ namespace Assets.Editor
         /// <summary>
         /// R.cs 代码模板
         /// </summary>
-        public static string RSTemplate {
-            get {
+        public static string RSTemplate
+        {
+            get
+            {
                 return File.ReadAllText($"{LangFullPath}/RS.template");
             }
         }

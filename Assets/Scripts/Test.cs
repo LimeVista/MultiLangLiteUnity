@@ -24,6 +24,7 @@ public class Test : MonoBehaviour
     {
         Debug.Log(I18n.GetText(R.Strings.Lime));    // 使用方式 1
         Debug.Log(I18n.Instance[R.Strings.Name]);   // 使用方式 2
+        Debug.Log(I18n.Instance["Lime"]);           // 使用方式 3
 
         // 附加参数方式
         Debug.Log(I18n.GetText(R.Strings.Note, "This is a note"));

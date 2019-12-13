@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// 本文件由模板自动生成，请勿手动更改
@@ -15,9 +16,25 @@ namespace UnityI18n
         {
             public readonly static Strings Instance = new Strings();
 
+            private readonly Dictionary<string, int> CachedMap = new Dictionary<string, int>();
+
+            private Strings()
+            {
+                InitCache();
+            }
+            
             #region /* 字符串资源编号 */
 
 ${id}
+            #endregion
+
+            #region /* string cache*/
+
+            private void InitCache()
+            {
+${cache}
+            }
+
             #endregion
 
             #region /* Impl */
@@ -33,6 +50,15 @@ ${case}
                 }
 
                 throw new ResourcesNotFoundException(stringId + "not found");
+            }
+
+            public string FindText(string stringId)
+            {
+                if (CachedMap.TryGetValue(stringId, out int value))
+                {
+                    return FindText(value);
+                }
+                return null;
             }
         }
     }
