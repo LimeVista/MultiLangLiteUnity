@@ -128,8 +128,29 @@ namespace UnityI18n
         /// 获取字符串
         /// </summary>
         /// <param name="stringId">字符串编号</param>
+        /// <param name="args">额外参数</param>
+        /// <returns>字符串</returns>
+        public static string GetText(string stringId, params object[] args)
+        {
+            return string.Format(Instance[stringId], args);
+        }
+
+        /// <summary>
+        /// 获取字符串
+        /// </summary>
+        /// <param name="stringId">字符串编号</param>
         /// <returns>字符串</returns>
         public static string GetText(int stringId)
+        {
+            return Instance[stringId];
+        }
+
+        /// <summary>
+        /// 获取字符串
+        /// </summary>
+        /// <param name="stringId">字符串编号</param>
+        /// <returns>字符串</returns>
+        public static string GetText(string stringId)
         {
             return Instance[stringId];
         }
