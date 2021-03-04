@@ -334,7 +334,7 @@ namespace Assets.Editor
                 .AppendLine("default:")
                 .Append(6.Tabs())
                 .Append("return \"")
-                .Append(Value[SystemLanguage.English])
+                .Append(Value[SystemLanguage.English].Replace("\"","\\\""))
                 .AppendLine("\";");
 
             return MultiLangUtils.MethodTemplate
@@ -360,7 +360,7 @@ namespace Assets.Editor
                 .AppendLine(":")
                 .Append(6.Tabs())
                 .Append("return \"")
-                .Append(value)
+                .Append(value.Replace("\"","\\\""))
                 .AppendLine("\";");
         }
     }

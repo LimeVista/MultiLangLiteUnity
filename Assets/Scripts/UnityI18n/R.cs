@@ -86,13 +86,13 @@ namespace UnityI18n
                 switch (I18n.Instance.CurrentLanguage)
                 {
                     case SystemLanguage.ChineseSimplified:
-                        return "笔记:{0}.";
+                        return "笔记:\"{0}.\"";
                     case SystemLanguage.Japanese:
                         return "ノート:{0}.";
                     case SystemLanguage.Korean:
                         return "주:{0}.";
                     case SystemLanguage.Chinese:
-                        return "笔记:{0}.";
+                        return "笔记:\"{0}.\"";
                     case SystemLanguage.English:
                     default:
                         return "note:{0}.";
