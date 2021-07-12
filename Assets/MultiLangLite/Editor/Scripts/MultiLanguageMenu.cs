@@ -13,6 +13,7 @@
 // You should have received a copy of The MIT License (MIT)
 // along with this library.
 //
+
 using LitJson;
 using System;
 using System.Collections;
@@ -22,10 +23,10 @@ using System.Text;
 using UnityEditor;
 using UnityEngine;
 
-namespace Assets.Editor
+namespace MultiLangLiteEditor
 {
-
     #region 支持语言列表
+
     /**
      *  支持语言
      *  Afrikaans	        南非荷兰语
@@ -72,21 +73,16 @@ namespace Assets.Editor
      *  ChineseSimplified	中国简体
      *  ChineseTraditional	中国繁体
      */
+
     #endregion
 
     public static class MultiLanguageMenu
     {
         [MenuItem("Tools/MultiLanguage/Debug")]
-        public static void MultiLanguageDebug()
-        {
-            MultiLanguageImpl(true);
-        }
+        public static void MultiLanguageDebug() { MultiLanguageImpl(true); }
 
         [MenuItem("Tools/MultiLanguage/Release")]
-        public static void MultiLanguageRelease()
-        {
-            MultiLanguageImpl(false);
-        }
+        public static void MultiLanguageRelease() { MultiLanguageImpl(false); }
 
         private static void MultiLanguageImpl(bool debug)
         {
@@ -97,33 +93,29 @@ namespace Assets.Editor
         }
     }
 
-    class GenerateRStrings
+    internal class GenerateRStrings
     {
         /// <summary>
         /// Unity 所有支持语言列表
         /// </summary>
-        private readonly string[] LangNames = Enum.GetNames(typeof(SystemLanguage));
+        internal readonly string[] LangNames = Enum.GetNames(typeof(SystemLanguage));
 
         /// <summary>
         /// I18n
         /// </summary>
-        private readonly Dictionary<string, StringItem> Items =
-            new Dictionary<string, StringItem>();
+        internal readonly Dictionary<string, StringItem> Items = new Dictionary<string, StringItem>();
 
         /// <summary>
         /// 是否为 Debug 模式
         /// </summary>
-        private readonly bool IsDebug = false;
+        internal readonly bool IsDebug;
 
         /// <summary>
         /// 翻译语言列表
         /// </summary>
-        private readonly List<string> TransLangs = new List<string>();
+        internal readonly List<string> TransLangs = new List<string>();
 
-        public GenerateRStrings(bool debug)
-        {
-            IsDebug = debug;
-        }
+        public GenerateRStrings(bool debug) { IsDebug = debug; }
 
         /// <summary>
         /// 读取分析多语言 Json
@@ -162,10 +154,11 @@ namespace Assets.Editor
                     if (lang != name) continue;
                     TransLangs.Add(lang);
                     // Debug.Log(lang);
-                    if (!AddValues(f, (SystemLanguage)Enum.Parse(typeof(SystemLanguage), lang)))
+                    if (!AddValues(f, (SystemLanguage) Enum.Parse(typeof(SystemLanguage), lang)))
                         return false;
                 }
             }
+
             return Check();
         }
 
@@ -179,7 +172,7 @@ namespace Assets.Editor
             var cacheStr = new StringBuilder();
             var implStr = new StringBuilder();
             var caseStr = new StringBuilder();
-            int i = 20190000;
+            var i = 20190000;
             foreach (var item in Items)
             {
                 idStr.AppendLine(item.Value.GenerateResourceID(i++));
@@ -187,11 +180,12 @@ namespace Assets.Editor
                 implStr.AppendLine(item.Value.GenerateMethod());
                 caseStr.AppendLine(item.Value.GenerateCase());
             }
+
             var code = rs.ReplaceSign("id", idStr.ToString())
                 .ReplaceSign("cache", cacheStr.ToString())
                 .ReplaceSign("impl", implStr.ToString())
-                .ReplaceSign("case", caseStr.ToString())
-                .ToString();
+                .ReplaceSign("case", caseStr.ToString());
+
             File.WriteAllText(MultiLangUtils.CodeFilePath, code);
         }
 
@@ -204,7 +198,7 @@ namespace Assets.Editor
         private bool AddValues(string path, SystemLanguage lang)
         {
             var json = JsonMapper.ToObject<JsonData>(File.ReadAllText(path));
-            foreach (string key in (json as IDictionary).Keys)
+            foreach (string key in ((IDictionary) json).Keys)
             {
                 if (!Items.ContainsKey(key))
                 {
@@ -213,12 +207,15 @@ namespace Assets.Editor
                         Debug.LogWarning($"{lang.Name()}.json 存在无效字段 => {key}");
                         continue;
                     }
+
                     $"{lang.Name()}.json 存在无效字段 => {key}，操作失败".TintError();
                     return false;
                 }
+
                 var item = Items[key];
                 item.Value.Add(lang, json[key].ToString());
             }
+
             return true;
         }
 
@@ -240,6 +237,7 @@ namespace Assets.Editor
                 $"[{item.Value.Key}] 缺少 {nonExist.Connect()} 语言，操作失败".TintError();
                 return false;
             }
+
             return true;
         }
     }
@@ -281,7 +279,6 @@ namespace Assets.Editor
         /// 生成如下资源 id
         /// CachedMap.Add("Name", Name);
         /// </summary>
-        /// <param name="id">id</param>
         /// <returns>代码</returns>
         public string GenerateResourceString()
         {
@@ -316,15 +313,13 @@ namespace Assets.Editor
             }
 
             // 对中文进行友好适配
-            if (Value.TryGetValue(SystemLanguage.ChineseTraditional,
-                out string zh))
+            if (Value.TryGetValue(SystemLanguage.ChineseTraditional, out var zh))
             {
                 GenerateLanguageCase(sb, "Chinese", zh);
             }
-            else if (Value.TryGetValue(SystemLanguage.ChineseSimplified,
-             out string zhCN))
+            else if (Value.TryGetValue(SystemLanguage.ChineseSimplified, out var zhCn))
             {
-                GenerateLanguageCase(sb, "Chinese", zhCN);
+                GenerateLanguageCase(sb, "Chinese", zhCn);
             }
 
             // 默认语言适配
@@ -334,7 +329,7 @@ namespace Assets.Editor
                 .AppendLine("default:")
                 .Append(6.Tabs())
                 .Append("return \"")
-                .Append(Value[SystemLanguage.English].Replace("\"","\\\""))
+                .Append(Value[SystemLanguage.English].Replace("\"", "\\\""))
                 .AppendLine("\";");
 
             return MultiLangUtils.MethodTemplate
@@ -360,32 +355,26 @@ namespace Assets.Editor
                 .AppendLine(":")
                 .Append(6.Tabs())
                 .Append("return \"")
-                .Append(value.Replace("\"","\\\""))
+                .Append(value.Replace("\"", "\\\""))
                 .AppendLine("\";");
         }
     }
 
     static class MultiLangUtils
     {
-        public const string LangFullPath = "Assets/Editor/MultiLang/Vaules/";
-        public const string CodeFilePath = "Assets/Scripts/UnityI18n/R.cs";
+        public const string LangFullPath = "Assets/MultiLangLite/Editor/I18n/";
+        public const string TemplatePath = "Assets/MultiLangLite/Editor/Template";
+        public const string CodeFilePath = "Assets/MultiLangLite/Scripts/R.cs";
 
         /// <summary>
         /// 方法模板
         /// </summary>
-        public static string MethodTemplate { get; } =
-           File.ReadAllText($"{LangFullPath}/RSM.template");
+        public static string MethodTemplate { get; } = File.ReadAllText($"{TemplatePath}/RSM.template");
 
         /// <summary>
         /// R.cs 代码模板
         /// </summary>
-        public static string RSTemplate
-        {
-            get
-            {
-                return File.ReadAllText($"{LangFullPath}/RS.template");
-            }
-        }
+        public static string RSTemplate => File.ReadAllText($"{TemplatePath}/RS.template");
 
         /// <summary>
         /// 首字母大写
@@ -416,10 +405,7 @@ namespace Assets.Editor
         /// </summary>
         /// <param name="lang">SystemLanguage</param>
         /// <returns>Name</returns>
-        public static string Name(this SystemLanguage lang)
-        {
-            return Enum.GetName(typeof(SystemLanguage), lang);
-        }
+        public static string Name(this SystemLanguage lang) { return Enum.GetName(typeof(SystemLanguage), lang); }
 
         /// <summary>
         /// 将字符串列表连接为字符串

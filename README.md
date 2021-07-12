@@ -5,7 +5,7 @@
 将多语言 `JSON` 生成 `C#` 静态代码，利用 `R.Strings.id` 进行绑定获取，`GetText` 无 `IO` 、无反射，使用方便，运行效率极高。但是由于生成静态代码，不适合文本量很大的项目。
 
 ## 使用方式
-* 将符合 `SystemLanguage` 枚举名称的 `JSON` 文件置入 `Assets/Editor/MultiLang/Vaules` 文件夹， `JSON` 文件命名规则如 `SystemLanguage.English -> English.json`。 `English.json` 为默认语言，不可缺少。 `JSON` 格式参照 [文件格式](https://github.com/LimeVista/MultiLangLiteUnity/blob/master/Assets/Editor/MultiLang/Vaules/English.json)
+* 将符合 `SystemLanguage` 枚举名称的 `JSON` 文件置入 `Assets/MultiLangLite/Editor/I18n` 文件夹， `JSON` 文件命名规则如 `SystemLanguage.English -> English.json`。 `English.json` 为默认语言，不可缺少。 `JSON` 格式参照 [文件格式](Assets/MultiLangLite/Editor/I18n/English.json)
 
 * 使用 `Unity` 编辑器菜单 `Tools/MultiLanguage/Debug` 或 `Tools/MultiLanguage/Release` 生成 `R.cs` 文件
 
@@ -19,7 +19,7 @@ I18n.GetText(R.Strings.Note, "This is a note");
 ```
 
 ## 高级使用
-> 详见： [I18n](https://github.com/LimeVista/MultiLangLiteUnity/blob/master/Assets/Scripts/UnityI18n/I18n.cs)
+> 详见： [I18n](Assets/MultiLangLite/Scripts/I18n.cs)
 
 ## 缺点
 > 对外部资源包文本、联网获取文本多语言尚未实现

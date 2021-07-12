@@ -13,18 +13,23 @@
 // You should have received a copy of The MIT License (MIT)
 // along with this library.
 //
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityI18n;
 
+[RequireComponent(typeof(Text))]
 public class Test : MonoBehaviour
 {
-    void Start()
+    private void Start()
     {
-        Debug.Log(I18n.GetText(R.Strings.Lime));    // 使用方式 1
-        Debug.Log(I18n.Instance[R.Strings.Name]);   // 使用方式 2
-        Debug.Log(I18n.Instance["Lime"]);           // 使用方式 3
+        GetComponent<Text>().text = I18n.GetText(R.Strings.Lime);
+        
+        Debug.Log(I18n.GetText(R.Strings.Lime)); // 使用方式 1
+        Debug.Log(I18n.Instance[R.Strings.Name]); // 使用方式 2
+        Debug.Log(I18n.Instance["Lime"]); // 使用方式 3
 
         // 附加参数方式
         Debug.Log(I18n.GetText(R.Strings.Note, "This is a note"));

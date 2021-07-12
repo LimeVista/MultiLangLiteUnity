@@ -1,20 +1,34 @@
+//
+// Copyright (C) 2017 LimeVista
+// Author: LimeVista(https://github.com/LimeVista/MultiLangLiteUnity)
+//
+// This library is free software; you can redistribute it and/or modify
+// it  under the terms of the The MIT License (MIT).
+//
+// This library is distributed in the hope that it will be useful, but
+// WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
+// See The MIT License (MIT) for more details.
+//
+// You should have received a copy of The MIT License (MIT)
+// along with this library.
+//
+
 using System;
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
-/// 本文件由模板自动生成，请勿手动更改
-/// </summary>
 namespace UnityI18n
 {
     /// <summary>
     /// 资源类
+    /// 本文件由模板自动生成，请勿手动更改
     /// </summary>
     public static class R
     {
         public class Strings : ITextHolder
         {
-            public readonly static Strings Instance = new Strings();
+            public static readonly Strings Instance = new Strings();
 
             private readonly Dictionary<string, int> CachedMap = new Dictionary<string, int>();
 

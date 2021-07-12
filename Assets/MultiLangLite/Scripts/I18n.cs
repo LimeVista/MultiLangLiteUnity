@@ -14,6 +14,7 @@
 // along with this library.
 //
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
 namespace UnityI18n
@@ -21,11 +22,12 @@ namespace UnityI18n
     /// <summary>
     /// 多国语言类
     /// </summary>
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public partial class I18n
     {
         private static readonly object Locker = new object();   // 同步锁
-        private static I18n Inst = null;                        // I18n 单例
-        private ITextHolder Holder = null;                      // 文本实现持有者
+        private static I18n Inst;                               // I18n 单例
+        private ITextHolder Holder;                             // 文本实现持有者
 
         partial void InitHook();                                // 默认初始化注入
 
@@ -69,6 +71,7 @@ namespace UnityI18n
         ///  初始化，非必须，如果自动生成 R.cs 能自动注入
         /// </summary>
         /// <param name="holder">自动生成的ITextHolder</param>
+        /// <param name="lang">语言</param>
         public static void Init(ITextHolder holder, SystemLanguage lang)
         {
             Instance.Holder = holder ?? throw new NullReferenceException("holder must be not null");
